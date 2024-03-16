@@ -1,20 +1,29 @@
+// Biweekly Contest 126 16-03-2024
+// 3079. Find the Sum of Encrypted Integers
+
 class Solution {
 public:
-    int findMaxLength(vector<int>& nums) {
-        int n = nums.size();
-        unordered_map<int, int> mp;
-        int sum = 0;
-        int subArray_length = 0;
-        for (int i = 0; i < n; i++) {
-            sum += nums[i] == 0 ? -1 : 1; 
-            if (sum == 0) {
-                subArray_length = i + 1;
-            } else if (mp.find(sum) != mp.end()) {
-                subArray_length = max(subArray_length, i - mp[sum]);
-            } else {
-                mp[sum] = i;
+    int sumOfEncryptedInt(vector<int>& nums) {
+        int ans = 0;
+        for(auto& x: nums) {
+            int maxDigit = 0;
+            vector<int> digits;
+            while(x) {
+                digits.push_back(x % 10);
+                x /= 10;
             }
+            for(auto& y: digits) {
+                maxDigit = max(maxDigit, y);
+            }
+            for(auto& digit: digits) {
+                digit = maxDigit;
+            }
+            int newNum = 0;
+            for(auto& digit: digits) {
+                newNum = newNum * 10 + digit;
+            }
+            ans += newNum;
         }
-        return subArray_length;
+        return ans;
     }
 };
